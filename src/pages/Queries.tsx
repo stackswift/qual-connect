@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useQueryContext } from "../App";
 import Header from "@/components/Header";
 import QueryCard from "@/components/QueryCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockQueries, QueryStatus } from "@/data/mockData";
+import { QueryStatus } from "@/data/mockData";
 
 const Queries = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
+  const { queries } = useQueryContext();
 
   const filterQueries = (status?: QueryStatus) => {
-    if (!status) return mockQueries;
-    return mockQueries.filter(query => query.status === status);
+    if (!status) return queries;
+    return queries.filter(query => query.status === status);
   };
 
   const getTabCount = (status?: QueryStatus) => {
@@ -19,10 +21,10 @@ const Queries = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 animate-fade-up">
-          <h1 className="text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             All Queries
           </h1>
           <p className="text-muted-foreground text-lg font-medium">
@@ -50,7 +52,7 @@ const Queries = () => {
           </TabsList>
 
           <TabsContent value="all" className="space-y-4">
-            {mockQueries.map(query => (
+            {queries.map(query => (
               <QueryCard key={query.id} query={query} />
             ))}
           </TabsContent>
